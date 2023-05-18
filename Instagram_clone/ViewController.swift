@@ -6,85 +6,76 @@
 //
 
 import UIKit
-import Alamofire
-import AlamofireImage
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var tableViewOutlet: UITableView!
+    @IBOutlet weak var collectionViewOutlet: UICollectionView!
     
-    var profileImage: UIImage? = nil
-    var contentImage: UIImage? = nil
+    //var profileImage: UIImage? = nil
+    //var contentImage: UIImage? = nil
     
-    //var profilePics = ["pic_1", "pic_2", "pic_3", "pic_4", "pic_5"]
-    var userNames = ["user_1", "User_2", "User_3", "User_4", "User_5"]
-    var subTitles = ["abc", "xyz", "pqr", "klm", "mnq", "yzw"]
-    //var contentImages = ["img_1", "img_2", "img_3", "img_4", "img_5"]
+    var profilePics = ["pic_1", "pic_2", "pic_3", "pic_4", "pic_5", "pic_6", "pic_7", "pic_8", "pic_9", "pic_10", "pic_11", "pic_12", "pic_13"]
+    var userNames = ["squeamishamerican", "ruinedstood", "companyhook", "abrupthorse", "oxbirdom", "extraneouslanyard", "caughtsulphur", "nightgownpapaya", "phewsteeve", "tailpurring", "incentivefireworks", "anothervivid", "feigneddrama"]
+    //var subTitles = ["abc", "xyz", "pqr", "klm", "mnq", "yzw"]
+    var contentImages = ["img_1", "img_2", "img_3", "img_4", "img_5", "img_6", "img_7", "img_8", "img_9", "img_10", "img_11", "img_12", "img_13"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableViewOutlet.delegate = self
         tableViewOutlet.dataSource = self
+        collectionViewOutlet.delegate = self
+        collectionViewOutlet.dataSource = self
         
-        let CellNib = UINib(nibName: "customTableViewCell", bundle: nil)
-        tableViewOutlet.register(CellNib, forCellReuseIdentifier: "CustomCell")
+        let FeedCellNib = UINib(nibName: "feedCell", bundle: nil)
+        tableViewOutlet.register(FeedCellNib, forCellReuseIdentifier: "FeedCell")
         
-        //for profile img (the api is default frm the pod)
-        AF.request("https://httpbin.org/image/png").responseImage { response in
-            debugPrint(response)
-
-            print(response.request)
-            print(response.response)
-            debugPrint(response.result)
-
-            if case .success(let fetchedProfileImage) = response.result {
-                //print("image downloaded: \(profileImage)")
-                self.profileImage = fetchedProfileImage
-            }
-        }
-        
-        //for content image
-        AF.request("https://random.imagecdn.app/500/150").responseImage { response in
-            debugPrint(response)
-
-            print(response.request)
-            print(response.response)
-            debugPrint(response.result)
-
-            if case .success(let fetchedContentImage) = response.result {
-                //print("image downloaded: \(contentImage)")
-                self.contentImage = fetchedContentImage
-            }
-        }
-        
+        let StoryCellNib = UINib(nibName: "storyCell", bundle: nil)
+        collectionViewOutlet.register(StoryCellNib, forCellWithReuseIdentifier: "StoryCell")
     }
 }
 
 
-extension ViewController: UITableViewDelegate {}
+extension ViewController: UITableViewDelegate, UICollectionViewDelegate {}
 
-extension ViewController: UITableViewDataSource {
+extension ViewController: UITableViewDataSource, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return userNames.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let storyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "StoryCell", for: indexPath) as! storyCell
+        
+        storyCell.storyProfilePicView.image = UIImage(named: profilePics[indexPath.row])
+        
+        return storyCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.row)
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return userNames.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let feedCell = tableView.dequeueReusableCell(withIdentifier: "FeedCell") as! feedCell
         
+        feedCell.contentImageView.image = nil
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell") as! customTableViewCell
+        feedCell.profileImageOutlet.image = UIImage(named: profilePics[indexPath.row])
+        //cell.profileImageOutlet.image = profileImage
+        feedCell.userNameLabel.text = userNames[indexPath.row]
+        //feedCell.subTitleLabel.text = subTitles[indexPath.row]
+        feedCell.contentImageView.image = UIImage(named: contentImages[indexPath.row])
+        //cell.contentImageView.image = contentImage
         
-        cell.contentImageView.image = nil
-        
-        //cell.profileImageOutlet.image = UIImage(named: profilePics[indexPath.row])
-        cell.profileImageOutlet.image = profileImage
-        cell.userNameLabel.text = userNames[indexPath.row]
-        cell.subTitleLabel.text = subTitles[indexPath.row]
-        //cell.contentImageView.image = UIImage(named: contentImages[indexPath.row])
-        cell.contentImageView.image = contentImage
-        
-        return cell
+        return feedCell
     }
 }

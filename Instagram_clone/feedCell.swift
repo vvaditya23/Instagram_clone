@@ -18,7 +18,7 @@ class feedCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        profileImageOutlet.layer.cornerRadius = 15
+        profileImageOutlet.layer.cornerRadius = 25
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

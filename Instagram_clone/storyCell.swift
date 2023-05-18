@@ -9,9 +9,14 @@ import UIKit
 
 class storyCell: UICollectionViewCell {
 
+    @IBOutlet weak var storyProfilePicView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        storyProfilePicView.layer.cornerRadius = 25
+        storyProfilePicView.layer.borderColor = UIColor.systemPink.cgColor
+        storyProfilePicView.layer.borderWidth = 2.0
     }
 
 }
