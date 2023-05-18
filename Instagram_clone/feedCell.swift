@@ -7,7 +7,7 @@
 
 import UIKit
 
-class customTableViewCell: UITableViewCell {
+class feedCell: UITableViewCell {
 
     @IBOutlet weak var profileImageOutlet: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
