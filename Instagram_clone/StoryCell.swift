@@ -7,9 +7,12 @@
 
 import UIKit
 
-class storyCell: UICollectionViewCell {
+class StoryCell: UICollectionViewCell {
 
     @IBOutlet weak var storyProfilePicView: UIImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    
+    var username = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -17,6 +20,8 @@ class storyCell: UICollectionViewCell {
         storyProfilePicView.layer.cornerRadius = 25
         storyProfilePicView.layer.borderColor = UIColor.systemPink.cgColor
         storyProfilePicView.layer.borderWidth = 2.0
+        
+        usernameLabel.text = username
     }
 
 }
